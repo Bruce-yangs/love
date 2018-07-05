@@ -9,6 +9,7 @@ body {
 #mainDiv{
 	width: 100%;
 	height: 100%;
+	position: relative;
 }
 
 #loveHeart {
@@ -114,3 +115,4 @@ body {
 #copyright a{
 	color:#666;
 }
+
