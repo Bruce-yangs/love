@@ -5,9 +5,28 @@
 	<!--<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">-->
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<style type="text/css">
-		@font-face {
-			font-family: digit;
-			src: url('digital-7_mono.ttf') format("truetype");
+		.music {
+			width: 22px;
+			height: 22px;
+			background: url(./img/audio.png) no-repeat;
+			background-size: 100% auto;
+			position: fixed;
+			left: 20px;
+			top: 20px;
+			-webkit-animation: music 1s infinite linear;
+		}
+		@keyframes music {
+			0% {
+				-webkit-transform: rotate(0);
+			}
+			100% {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+		.stop {
+			background: url(./img/audio.png) left bottom;
+			background-size: 100% auto;
+			-webkit-animation: none;
 		}
 	</style>
 	<link href="css/default.css" type="text/css" rel="stylesheet">
@@ -19,8 +38,12 @@
 
 <body>
 	<div id="mainDiv">
+		<p class="music" id="p"></p>
+
+		<audio src="./img/Love.mp3" autoplay="autoplay" autostart="true"   loop="loop" id="aud" class="aud"></audio>
 		<div id="content">
 			<div id="code">
+
 				<span class="comments">/**</span><br />
 				<span class="space"/><span class="comments">*2018—07-05.</span><br />
 				<span class="space"/><span class="comments">*/</span><br />
@@ -61,8 +84,6 @@
 		</div>
 	
 	</div>
-	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-
 	<script type="text/javascript">
 		var offsetX = $("#loveHeart").width() / 2;
 		var offsetY = $("#loveHeart").height() / 2 - 55;
@@ -96,85 +117,64 @@
 			$("#code").typewriter();
 		}
 
-
-        /// 分享标题
-        var shareTitle;
-		///微信分享控制
-        var iTitle = 'Our Love Story';
-        var link ='https://bruce-yangs.github.io/love/';
-        var desc ='Our Love Story';
-        var shareIcon ='https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=50e1872d49540923aa696478aa63b634/f3d3572c11dfa9ec57432f1962d0f703918fc14b.jpg';
-
-        wx.config({
-            debug: false,
-            appId: "wx99a066ed3be3d52e",
-            timestamp: "1462521975",
-            nonceStr: "9f2c415b-0b8a-48be-ae2c-b4b92a76f494",
-            signature: "0f978b1b7884092cfb825fed7ea18bc9b9fd3b27",
-            jsApiList: [
-                // 所有要调用的 API 都要加到这个列表中
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo'
-            ]
+        $("#p").click(function(){
+            if(aud.paused){
+                aud.play();
+                $(this).addClass("music").removeClass("stop")
+            }else{
+                aud.pause();
+                $(this).addClass("music stop")
+            }
         });
-        wx.ready(function () {
-            // 在这里调用 API
-            //document.title = iTitle;
-            wx.onMenuShareTimeline({
-                title: iTitle, // 分享标题
-                link: link, // 分享链接
-                imgUrl: shareIcon, // 分享图标
-                success: function () {
-                    // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                }
-            });
-            wx.onMenuShareAppMessage({
-                title: iTitle, // 分享标题
-                desc: desc, // 分享描述
-                link: link, // 分享链接
-                imgUrl: shareIcon, // 分享图标
-                type: '', // 分享类型,music、video或link，不填默认为link
-                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                success: function () {
-                    // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                }
-            });
 
-            wx.onMenuShareQQ({
-                title: iTitle, // 分享标题
-                desc: desc, // 分享描述
-                link: link, // 分享链接
-                imgUrl: shareIcon, // 分享图标
-                success: function () {
-                    // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                }
-            });
+        //--创建页面监听，等待微信端页面加载完毕 触发音频播放
+        document.addEventListener('DOMContentLoaded', function () {
+            function audioAutoPlay() {
+                var audio = document.getElementById('aud');
+                audio.play();
+                document.addEventListener("WeixinJSBridgeReady", function () {
+                    audio.play();
+                }, false);
+            }
+            audioAutoPlay();
+        });
 
-            wx.onMenuShareWeibo({
-                title: iTitle, // 分享标题
-                desc: desc, // 分享描述
-                link: link, // 分享链接
-                imgUrl: shareIcon, // 分享图标
-                success: function () {
-                    // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                }
-            });
-
+        //--创建触摸监听，当浏览器打开页面时，触摸屏幕触发事件，进行音频播放
+        document.addEventListener('touchstart', function () {
+            function audioAutoPlay() {
+                var audio = document.getElementById('aud');
+                audio.play();
+            }
+            audioAutoPlay();
         });
 	</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
